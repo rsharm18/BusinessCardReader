@@ -24,7 +24,7 @@ export class BCardServicesService {
   setLoggedIn(val:boolean)
   {
     this.loggedIn = val;
-    localStorage.setItem("loggedIn","true");
+    localStorage.setItem("loggedIn",""+val);
   }
 
   validateUser(userName:string,password:string):boolean
@@ -34,10 +34,11 @@ export class BCardServicesService {
       this.username=userName;
 
       sessionStorage.setItem(this.username,"true");
-      localStorage.setItem("loggedIn","true");
+      
+      this.setLoggedIn(true);
 
       this.route.navigate(["/businessCards"]);
-      this.setLoggedIn(true);
+      
 
       return true;
     }
