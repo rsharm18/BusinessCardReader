@@ -1,0 +1,28 @@
+
+
+<div class="container">
+
+    <div *ngIf="inValidLogin && showInValidLoginMsg" class="alert alert-danger">Incorrect user name and password</div>
+    
+    <form #loginForm="ngForm"  (ngSubmit)="checkLog()">
+      <table>
+        <tr>
+          <td>User Name</td>
+          <td class="form-group">
+            <input type="text" placeholder="Enter your user ID" required class="form-control" [(ngModel)]="email" name="  ">
+          </td>
+        </tr>
+        <tr>
+            <td>User Password</td>
+            <td class="form-group">
+              <input type="password" placeholder="Enter your password" required class="form-control" [(ngModel)]="password" name="password">
+            </td>
+          </tr>
+          <tr>
+              <td colspan="2"><input type="submit" value="Login" class="btn btn-primary" [disabled]="!loginForm.valid">
+              </td>
+            </tr>
+      </table>
+    </form>
+    </div>
+    
