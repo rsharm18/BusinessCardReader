@@ -1,0 +1,73 @@
+
+            <!-- <form #f="ngForm">
+                <table class="table table-borderless table-dark">
+                     <tr class="form-group">
+                        <td>Name </td> 
+                        <td><input [(ngModel)]="name" type="text" placeholder="Name" ></td>
+                    </tr>
+                    <tr class="form-group" > 
+                        <td>Email </td> 
+                        <td><input [(ngModel)]="email" type="email" placeholder="Email"></td>
+                    </tr>
+                    <tr class="form-group">
+                        <td>Organization Name </td> 
+                        <td><input [(ngModel)]="orgName" type="text" placeholder="Organization Name"></td>
+                    </tr>
+                    <tr class="form-group">
+                        <td>Upload Business Card </td> 
+                        <td> 
+                            <input type="file" value="Upload the Business Card">
+                        </td>
+                    </tr>
+                </table>
+            </form> -->
+
+    <div class="continer">
+        <div>
+                <form #f="ngForm">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-2"> Name </div>
+                            <div class="col-md-8"> 
+                                <input [(ngModel)]="name" name="name" type="text" class="form-control" placeholder="Enter Name" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-2"> Email ID </div>
+                                <div class="col-md-8"> 
+                                        <input [(ngModel)]="emailID" name="emailID" type="email" class="form-control" placeholder="Enter Email ID" required >
+                                </div>
+                        </div>
+                        <div class="row">
+                                <div class="col-md-2"> Organization Name </div>
+                                <div class="col-md-8"> <input [(ngModel)]="orgName" name="orgName" type="text"  placeholder="Enter Organization name" required></div>
+                            </div>
+
+                            <div class="row">
+                                    <div class="col-md-2"> Upload Business Card </div>
+                                    <div class="col-md-4"> 
+                                            <input type="file" value="Upload the Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
+                                        </div>
+                                    
+                                    <div class="col-md-4" >
+                                      
+                                            <img  *ngIf="imagePath" [src]="imagePath" class="rounded" style="height: 60px; width: 120 px;" id="bcImg"/>
+                                            
+                                        </div>
+                                    
+
+                                </div>
+                    </div>
+                    <div class="form-group">
+                            <button class="btn btn-primary" [disabled]="!f.form.valid" (click)="saveBCard()">
+                                Save Business Card
+                            </button>
+                            &nbsp;
+                            <button class="btn btn-secondary"  (click)="saveReset()" type="reset">
+                                    Reset
+                                </button>
+                            </div>
+                            <div  class="w-100"></div>
+                        </form>
+        </div>
+</div>

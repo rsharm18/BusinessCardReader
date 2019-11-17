@@ -8,6 +8,7 @@ import { LoginComponent } from './login/login.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from './app-routing/app-routing.module';
+import { NewBusinessCardComponentComponent } from './new-business-card-component/new-business-card-component.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
     BusinessCardComponent,
     BusinessCardsComponent,
     LoginComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    NewBusinessCardComponentComponent
   ],
   imports: [
     BrowserModule,

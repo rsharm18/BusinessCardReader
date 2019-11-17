@@ -1,15 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BusinessCardComponent } from './business-card/business-card.component';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { BusinessCardDataModel } from './business-card-data-model/business-card-data-model.module';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BCardServicesService {
 
+  private businessCards:BusinessCardDataModel[] = [];
+
   username:string;
   password:string;
 
   allowAccess=false;
+
+  currentBusinessCard:Subject<BusinessCardDataModel> = new BehaviorSubject<BusinessCardDataModel>(null);
+
   constructor(private route:Router) { }
 
   private loggedIn = JSON.parse(localStorage.getItem("loggedIn") || 'false');
@@ -46,5 +54,13 @@ export class BCardServicesService {
     {
       return false;
     }
+  }
+
+  //add a new Business Card
+  addNewBcard(newCard:BusinessCardDataModel)
+  {
+    newCard.getDetail();
+    this.currentBusinessCard.next(newCard);
+    this.businessCards.push(newCard);
   }
 }

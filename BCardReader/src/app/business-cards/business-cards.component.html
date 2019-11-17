@@ -14,7 +14,18 @@
       </span>
     </div>
   </nav>
-  <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand">Logout</a>
-    
-  </nav>
+  
+<div class="container">
+    <section id="header"> New Business Card
+        <div class="row" >
+              <app-new-business-card-component [bCard]=currentBCard [curindex]=curindex (onSaveBCard)="saveBCard($event)"></app-new-business-card-component>
+          </div>
+  </section><br><br>
+  <section id="body"> Uploaded Business Card
+    <div class="w-100" style="background-color: #eee;">
+        <div class="w-100" *ngFor="let bCard of getBCards(); index as i" width='100%'>
+                <app-business-card [bCard]=bCard [index]=i (onUpdateBCard)="updateBCard($event)" (onDeleteBCard)="deleteBCard($event)"></app-business-card>
+        </div>
+    </div>
+  </section>
+</div>
