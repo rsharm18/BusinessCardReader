@@ -53,6 +53,7 @@
                                       
                                             <img  *ngIf="imagePath" [src]="imagePath" class="rounded" style="height: 60px; width: 120 px;" id="bcImg"/>
                                             
+                                            <app-webcam-component (imageClicked)="setImage($event)"></app-webcam-component>
                                         </div>
                                     
 

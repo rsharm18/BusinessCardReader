@@ -16,6 +16,6 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(): void {
     console.log(`reset login?${this.bCardService.isLoggedIn} `)
-    this.bCardService.setLoggedIn(false);
+    //this.bCardService.setLoggedIn(false);
   }
 }

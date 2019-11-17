@@ -115,6 +115,6 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
 
    ngOnDestroy(): void {
      console.log("resetting the login");
-    this.bCardSerivces.setLoggedIn(false)
+    //this.bCardSerivces.setLoggedIn(false)
   }
 }

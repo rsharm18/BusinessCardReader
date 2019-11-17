@@ -9,6 +9,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { HttpClientModule } from "@angular/common/http";
 import { AppRoutingModule } from './app-routing/app-routing.module';
 import { NewBusinessCardComponentComponent } from './new-business-card-component/new-business-card-component.component';
+import {WebcamModule} from 'ngx-webcam';
+import { WebcamComponentComponent } from './webcam-component/webcam-component.component';
 
 @NgModule({
   declarations: [
@@ -17,13 +19,15 @@ import { NewBusinessCardComponentComponent } from './new-business-card-component
     BusinessCardsComponent,
     LoginComponent,
     NotFoundComponent,
-    NewBusinessCardComponentComponent
+    NewBusinessCardComponentComponent,
+    WebcamComponentComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    WebcamModule
   ],
   providers: [],
   bootstrap: [AppComponent]

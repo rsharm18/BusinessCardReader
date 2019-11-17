@@ -45,7 +45,7 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
 
     console.log(` ****************** input in the new component ${this.bCard} ******************`);
 
-    this.imagePath = "../../assets/no-image-found.jpg";
+    // this.imagePath = "../../assets/no-image-found.jpg";
 
     if(this.bCard)
     {
@@ -153,4 +153,12 @@ _handleReaderLoaded(readerEvt) {
 }
 
 
+setImage(b64String:string)
+{
+  this.base64Image=b64String;
+
+  this.imagePath = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
+                 + this.base64Image);
+  console.log( `b64String : ${b64String}`)
+}
 }

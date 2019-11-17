@@ -16,9 +16,9 @@ export class AuthGuardGuard implements CanActivate {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-      // console.log(`${next.params} <--> ${state.toString}`)
+      console.log(`${next.params} <--> ${state.toString}`)
       // console.log(`is valid user ? ${this.bCardServices.isLoggedIn()}`)
-      // console.log(`is valid user ? ${localStorage.getItem("loggedIn")}`)
+      console.log(`is valid user ? ${localStorage.getItem("loggedIn")}`)
       if(!this.bCardServices.isLoggedIn()){
           this.router.navigate(['/login']);
           return false ;
