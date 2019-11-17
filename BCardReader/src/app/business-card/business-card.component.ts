@@ -10,27 +10,34 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class BusinessCardComponent implements OnInit {
 
- @Input() bCard:BusinessCardDataModel;
+
  @Input() index:number;
 
- @Output() onUpdateBCard: EventEmitter<{bCard:BusinessCardDataModel,index:number}>;
- @Output() onDeleteBCard: EventEmitter<number>;
+ @Input() bCard:BusinessCardDataModel;
+  
+
+ @Output() onUpdateBCard: EventEmitter<{bCard:BusinessCardDataModel,id:string}>;
+ @Output() onDeleteBCard: EventEmitter<BusinessCardDataModel>;
 
  imagePath:SafeHtml;
-
+ id:string;
+ 
   constructor(private _sanitizer: DomSanitizer) {
     this.onDeleteBCard  = new EventEmitter();
     this.onUpdateBCard  = new EventEmitter();
    }
 
   ngOnInit() {
-    // console.log(`
-    // this.bCard.$name = ${this.bCard.$name}
-    // this.bCard.$email= ${this.bCard.$email}
-    // this.bCard.$companyName= ${this.bCard.$companyName}
-    // this.bCard.$imageurl= ${this.bCard.$imageurl}
-    // this.bCard.$userId= ${this.bCard.$userId}
-    // `)
+    this.id = this.bCard.id;
+
+    console.log(` ******************************************
+    this.bCard.$name = ${this.bCard.$name}
+    this.bCard.$email= ${this.bCard.$email}
+    this.bCard.$companyName= ${this.bCard.$companyName}
+    
+    this.bCard.$userId= ${this.bCard.$userId}
+    this.bCard.$id = ${this.bCard.$id}
+    `)
     this.getImage();
    }
 
@@ -58,13 +65,27 @@ export class BusinessCardComponent implements OnInit {
   }
   updateBCard()
   {
-    console.log(`triggering updated for ${this.bCard.$name} and ${this.index}`);
-    this.onUpdateBCard.emit({bCard:this.bCard,index:this.index});
+    console.log(`is instance ? ${ this.bCard instanceof BusinessCardDataModel}`);
+    console.log(`triggering updated for ${this.bCard} and ${this.bCard.$id}`);
+
+    
+    console.log(` calling from Update 
+    
+    this.bCard.$name = ${this.bCard.$name}
+    this.bCard.$email= ${this.bCard.$email}
+    this.bCard.$companyName= ${this.bCard.$companyName}
+    
+    this.bCard.$userId= ${this.bCard.$userId}
+    this.bCard.$id = ${this.bCard.$id}
+    `)
+
+    this.onUpdateBCard.emit({bCard:this.bCard,id:this.id});
 
   }
   deleteBCard()
   {
-    this.onDeleteBCard.emit(this.index);
+    console.log(`triggering updated for ${this.bCard} and ${this.bCard.$id}`);
+    this.onDeleteBCard.emit(this.bCard);
   }
 
   

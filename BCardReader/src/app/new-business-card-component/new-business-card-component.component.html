@@ -41,23 +41,38 @@
                         <div class="row">
                                 <div class="col-md-2"> Organization Name </div>
                                 <div class="col-md-8"> <input [(ngModel)]="orgName" name="orgName" type="text"  placeholder="Enter Organization name" required></div>
-                            </div>
+                        </div>
 
-                            <div class="row">
-                                    <div class="col-md-2"> Upload Business Card </div>
-                                    <div class="col-md-4"> 
-                                            <input type="file" value="Upload the Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
-                                        </div>
-                                    
-                                    <div class="col-md-4" >
-                                      
-                                            <img  *ngIf="imagePath" [src]="imagePath" class="rounded" style="height: 60px; width: 120 px;" id="bcImg"/>
-                                            
-                                            <app-webcam-component (imageClicked)="setImage($event)"></app-webcam-component>
-                                        </div>
-                                    
+                        <div class="row">
+                                <div class="col-md-2"> Phone </div>
+                                <div class="col-md-8"> <input [(ngModel)]="phone" name="phone" type="text"  placeholder="Enter Phone Number" required></div>
+                        </div>
 
+                        <div class="row">
+                                <div class="col-md-2"> Additional Info </div>
+                                <div class="col-md-8"> 
+                                    <textarea [(ngModel)]="otherNotes" name="otherNotes"></textarea></div>
+                        </div>
+
+                        <div class="row">
+                                <div class="col-md-2"> Upload Business Card </div>
+                            </div>     
+                        <div class="row">       
+                                <div class="col-md-6" >
+                                    <app-webcam-component (imageClicked)="setImage($event)"></app-webcam-component>
                                 </div>
+                                <div class="col-md-2"> 
+                                    <input type="file" value="Upload the Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
+                                </div>
+                                
+                                <div class="col-md-4" *ngIf="base64Image" ><br> Here is Your Image <br>
+                                    <img   [src]="imagePath" class="rounded" style="height: 300px; width: 300 px;" id="bcImg"/>
+                                </div>
+                        </div>
+                        <div class="row">       
+                            
+                        </div>                
+                               
                     </div>
                     <div class="form-group">
                             <button class="btn btn-primary" [disabled]="!f.form.valid" (click)="saveBCard()">

@@ -2,11 +2,16 @@ import { NgModule } from '@angular/core';
 
 export class BusinessCardDataModel { 
 
+  id:string;
+
   private name:string;
   private email:string;
   private userId:string;
   private companyName:string;
   private imageurl:string;
+  private phoneNumber:number;
+  private otherInfo:string
+  
 
   constructor(obj:any) {
 
@@ -15,13 +20,16 @@ export class BusinessCardDataModel {
     this.companyName  = obj && obj.companyName    || null;
     this.imageurl     = obj && obj.imageurl       || null;
     this.userId       = obj && obj.userId         || null;
+    this.id           = obj && obj.id             || null;
+    this.otherInfo    = obj && obj.otherInfo      || null;
+    this.phoneNumber  = obj && obj.phoneNumber    || null;
 
-    console.log(` imageurl 1 ${this.imageurl}`)
+    //console.log(` id ${this.id}`)
     if(!(this.imageurl && this.imageurl.trim().length >0))
     {
       this.imageurl = "../../assets/no-image-found.jpg";
     }
-    console.log(` imageurl 2 ${this.imageurl}`)
+    //console.log(` imageurl 2 ${this.imageurl}`)
 
    }
 
@@ -105,6 +113,56 @@ export class BusinessCardDataModel {
 	public set $email(value: string) {
 		this.email = value;
   }
+
+   /**
+     * Getter $phoneNumber
+     * @return {number}
+     */
+	public get $phoneNumber(): number {
+		return this.phoneNumber;
+	}
+
+    /**
+     * Setter $phoneNumber
+     * @param {number} value
+     */
+	public set $phoneNumber(value: number) {
+		this.phoneNumber = value;
+     }
+     
+     /**
+     * Getter $otherInfo
+     * @return {string}
+     */
+	public get $otherInfo(): string {
+		return this.otherInfo;
+	}
+
+    /**
+     * Setter $otherInfo
+     * @param {string} value
+     */
+	public set $otherInfo(value: string) {
+		this.otherInfo = value;
+     }
+
+      
+     /**
+     * Getter $id
+     * @return {string}
+     */
+     public get $id(): string {
+		return this.id;
+	}
+
+    /**
+     * Setter $id
+     * @param {string} value
+     */
+	public set $id(value: string) {
+          console.log(`setting the id is ${this.id}`);
+		this.id = value;
+	}
   
   public getDetail()
   {
