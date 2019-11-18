@@ -6,7 +6,7 @@ export class BusinessCardDataModel {
 
   private name:string;
   private email:string;
-  private userId:string;
+   userId:string;
   private companyName:string;
   private imageurl:string;
   private phoneNumber:number;

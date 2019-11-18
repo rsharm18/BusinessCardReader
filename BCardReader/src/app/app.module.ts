@@ -18,6 +18,8 @@ import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {  AngularFireDatabaseModule } from '@angular/fire/database';
+import { BusinessCardOverlayComponentComponent } from './business-card-overlay-component/business-card-overlay-component.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import {  AngularFireDatabaseModule } from '@angular/fire/database';
     LoginComponent,
     NotFoundComponent,
     NewBusinessCardComponentComponent,
-    WebcamComponentComponent
+    WebcamComponentComponent,
+    BusinessCardOverlayComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -35,6 +38,7 @@ import {  AngularFireDatabaseModule } from '@angular/fire/database';
     HttpClientModule,
     FormsModule,
     WebcamModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireDatabaseModule,
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features

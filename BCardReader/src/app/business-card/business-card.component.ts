@@ -18,7 +18,8 @@ export class BusinessCardComponent implements OnInit {
 
  @Output() onUpdateBCard: EventEmitter<{bCard:BusinessCardDataModel,id:string}>;
  @Output() onDeleteBCard: EventEmitter<BusinessCardDataModel>;
-
+ 
+ 
  imagePath:SafeHtml;
  id:string;
  
@@ -88,6 +89,5 @@ export class BusinessCardComponent implements OnInit {
     this.onDeleteBCard.emit(this.bCard);
   }
 
-  
 
 }

@@ -6,9 +6,11 @@ import { BusinessCardDataModel } from '../business-card-data-model/business-card
 import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { BCardConfig } from '../app.config';
+import { transformAll } from '@angular/compiler/src/render3/r3_ast';
+import { getLocaleDateFormat } from '@angular/common';
 
 @Component({
   selector: 'app-business-cards',
@@ -24,9 +26,9 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
 
   private curindex:number = -1;
 
-  private bCards:Observable<any[]>;
+  private bCards:Observable<BusinessCardDataModel[]>;
 
-  constructor(private route:Router, private bCardSerivces:BCardServicesService, public db:AngularFirestore) 
+  constructor(private route:Router, private bCardSerivces:BCardServicesService) 
   {
 
    
@@ -47,25 +49,8 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
   }
   ngOnInit() {
 
-    this.bCards = this.db.collection(BCardConfig.collection_endpoint).snapshotChanges()
-    .pipe(
-      map(actions => {
-        return actions.map(a => {
-
-          console.log(`Data : ${JSON.stringify(a.payload.doc.data())}`)
-          //Get document data
-          let data:BusinessCardDataModel = a.payload.doc.data() as BusinessCardDataModel;
-          //Get document id
-          const id = a.payload.doc.id;
-          data.$id= id;
-          console.log(`~~~~~ id as ${id} --> ${data.$id}`)
-          //this.businessCards.push(data);
-          //Use spread operator to add the id to the document data
-          return { id,...data };
-        });
-      })
-    )
-    ;
+    console.log(`${this.bCardSerivces.getCurrentUserName()}`)
+    this.getAllData()
     
     //if(this.db.collection(BCardConfig.collection_endpoint).get().
     // this.bCardSerivces.currentBusinessCard.subscribe(bCard =>{
@@ -107,6 +92,29 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
   }
 
 
+  getAllData()
+  {
+    this.bCards = this.bCardSerivces.getAllRecords()
+    .pipe(
+      map(actions => {
+        return actions.map(a => {
+
+          //console.log(`Data : ${JSON.stringify(a.payload.doc.data())}`)
+          //Get document data
+          let data:BusinessCardDataModel = a.payload.doc.data() as BusinessCardDataModel;
+          //Get document id
+          const id = a.payload.doc.id;
+          data.$id= id;
+          
+          //console.log(`~~~~~ id as ${id} --> ${data.$id}`)
+          //this.businessCards.push(data);
+          //Use spread operator to add the id to the document data
+          return { id,...data };
+        });
+      })
+    )
+    ;
+  }
   getBCards():BusinessCardDataModel[]
   {
     return this.businessCards;
@@ -119,6 +127,7 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
     //console.log(`data ====== ${JSON.stringify(obj)}`)
     
     this.currentBCard = obj.bCard
+    this.onOpen(true);
 
     // this.curindex = obj.index;
     // console.log(`index is ${obj.index}`);
@@ -176,5 +185,62 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
     console.log(`forupdated ${JSON.stringify(obj)}  id : ${obj.id}`);
 
     return ""+obj.id
+  }
+
+  onOpen(bool:boolean)
+  {
+    this.flag = bool;
+    console.log("I am  here");
+  }
+
+  flag:boolean;
+
+
+  searchByField(fieldName:string,fieldVal:string)
+  {
+   console.log("called searchByName");
+
+  //  let arr:BusinessCardDataModel[] = new Array<BusinessCardDataModel>();
+  //   this.bCards= this.bCardSerivces.getAllRecords()
+  //    .pipe(
+  //     map(actions => {
+  //       console.log(` data actions ${actions} ======================== `)
+  //       return actions.map(a => {
+  
+  //        // console.log(`Data : ${JSON.stringify(a.payload.doc.data())}`)
+  //         //Get document data
+  //         let data:BusinessCardDataModel = a.payload.doc.data() as BusinessCardDataModel;
+  //         //Get document id
+  //         const id = a.payload.doc.id;
+  //         data.$id= id;
+  //         data.id= id;
+
+  //         console.log(` data userid ${data['userId']}`)
+  //         const ub = a.payload.doc.data().filter(item => item.userId == 'foram');
+         
+  //         //console.log(`~~~~~ id as ${id} --> ${data.$id}`)
+  //         //this.businessCards.push(data);
+  //         //Use spread operator to add the id to the document data
+  //         return ub;
+  //       });
+  //     })
+  //   )
+
+  if(fieldVal.length > 0)
+  {
+  this.bCards = this.bCards.pipe(
+                    map( bcs => bcs.filter(bc =>{
+                      console.log(`this.bCards ${JSON.stringify(bc)}`)
+                       return bc[fieldName].toLowerCase().indexOf(fieldVal.toLowerCase()) >-1
+                    }) )
+    )
+                  }
+                  else{
+                    this.getAllData();
+                  }
+    //console.log(` %%%%%%%%%%%%%%%%% ${arr} %%%%%%%%%%%%%`)
+   
+    
+   
   }
 }

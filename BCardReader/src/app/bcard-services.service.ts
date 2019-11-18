@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { BusinessCardComponent } from './business-card/business-card.component';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject, Observable } from 'rxjs';
 import { BusinessCardDataModel } from './business-card-data-model/business-card-data-model.module';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -106,4 +106,18 @@ updateBCard(id:string, bCard:BusinessCardDataModel)
     console.log(`Deleted ${bCard.id} ${this.bCardData}`)
   } //deleteTask
 
+
+  getAllRecords():Observable<any>
+  {
+    return this.db.collection(BCardConfig.collection_endpoint,ref => {
+      let query : firebase.firestore.Query = ref;
+           { query = query.where('userId', '==', this.getCurrentUserName()) };
+      return query;
+    }).snapshotChanges();
+  }
+  // searchByField(fieldName:string, fieldValue:string)
+  // {
+  //   this.db.collection(BCardConfig.collection_endpoint,ref=>ref.where(fieldName,'==',userName.trim())
+  //   .where('password','==',pwd.trim()) )
+  // }
 }
