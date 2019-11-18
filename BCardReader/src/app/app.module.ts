@@ -11,15 +11,15 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { NewBusinessCardComponentComponent } from './new-business-card-component/new-business-card-component.component';
 import {WebcamModule} from 'ngx-webcam';
 import { WebcamComponentComponent } from './webcam-component/webcam-component.component';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import {  AngularFireDatabaseModule } from '@angular/fire/database';
-import { BusinessCardOverlayComponentComponent } from './business-card-overlay-component/business-card-overlay-component.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BusinessCardSearchComponentComponent } from './business-card-search-component/business-card-search-component.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +30,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NotFoundComponent,
     NewBusinessCardComponentComponent,
     WebcamComponentComponent,
-    BusinessCardOverlayComponentComponent
+    BusinessCardSearchComponentComponent
   ],
   imports: [
     BrowserModule,

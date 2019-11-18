@@ -1,77 +1,77 @@
 
-            <!-- <form #f="ngForm">
-                <table class="table table-borderless table-dark">
-                     <tr class="form-group">
-                        <td>Name </td> 
-                        <td><input [(ngModel)]="name" type="text" placeholder="Name" ></td>
-                    </tr>
-                    <tr class="form-group" > 
-                        <td>Email </td> 
-                        <td><input [(ngModel)]="email" type="email" placeholder="Email"></td>
-                    </tr>
-                    <tr class="form-group">
-                        <td>Organization Name </td> 
-                        <td><input [(ngModel)]="orgName" type="text" placeholder="Organization Name"></td>
-                    </tr>
-                    <tr class="form-group">
-                        <td>Upload Business Card </td> 
-                        <td> 
-                            <input type="file" value="Upload the Business Card">
-                        </td>
-                    </tr>
-                </table>
-            </form> -->
-
     <div class="continer">
         <div>
                 <form #f="ngForm">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-2"> Name </div>
-                            <div class="col-md-8"> 
-                                <input [(ngModel)]="name" name="name" type="text" class="form-control" placeholder="Enter Name" required>
+                            <div class="col-md-4">
+                                <div class="container">
+                                    <div class="row">
+                                            <div class="col-md-2"> Name </div>
+                                            <div class="col-md-4"> 
+                                                <input [(ngModel)]="name" name="name" type="text" class="form-control" placeholder="Enter Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="col-md-2"> Email ID </div>
+                                                <div class="col-md-4"> 
+                                                        <input [(ngModel)]="emailID" name="emailID" type="email" class="form-control" placeholder="Enter Email ID" required >
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="col-md-2"> Organization Name </div>
+                                                <div class="col-md-4">
+                                                     <input [(ngModel)]="orgName" name="orgName" type="text"   class="form-control" placeholder="Enter Organization name" required></div>
+                                        </div>
+                
+                                        <div class="row">
+                                                <div class="col-md-2"> Phone </div>
+                                                <div class="col-md-4"> 
+                                                    <input [(ngModel)]="phone" name="phone" type="text"   class="form-control" placeholder="Enter Phone Number" required></div>
+                                        </div>
+                
+                                        <div class="row">
+                                                <div class="col-md-2"> Additional Info </div>
+                                                <div class="col-md-4"> 
+                                                    <textarea [(ngModel)]="otherNotes" name="otherNotes"  class="form-control" rows="3"></textarea></div>
+                                        </div>
+                
+                                        <div class="divIncenter row">
+                                                    <div class="col-md-2"> 
+                                                            <button name="browseFile">Browse Business Card</button>
+                                                            <input type="file" value="Browse Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
+                                                        </div>
+                                                    <div class="col-md-2"> 
+                                                        <button name="browseFile" (click)="allowCamera=!allowCamera">
+                                                            <span *ngIf="!allowCamera">Open Camera</span>
+                                                            <span *ngIf="allowCamera">Close Camera</span>
+                                                        </button>
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="col-md-2"> Upload Business Card </div>
+                                            </div>     
+                                        
+                                        <div class="row">       
+                                            
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-6">
+
+                                    <div class="divIncenter row" *ngIf="allowCamera">       
+                                            <div class="col-md-6" >
+                                                <app-webcam-component (imageClicked)="setImage($event)"></app-webcam-component>
+                                            </div>
+                                           
+                                            
+                                            <div class="col-md-4" *ngIf="base64Image" ><br> Here is Your Image <br>
+                                                <img   [src]="imagePath" class="rounded" style="height: 300px; width: 300 px;" id="bcImg"/>
+                                            </div>
+                                    </div>
                             </div>
                         </div>
-                        <div class="row">
-                                <div class="col-md-2"> Email ID </div>
-                                <div class="col-md-8"> 
-                                        <input [(ngModel)]="emailID" name="emailID" type="email" class="form-control" placeholder="Enter Email ID" required >
-                                </div>
-                        </div>
-                        <div class="row">
-                                <div class="col-md-2"> Organization Name </div>
-                                <div class="col-md-8"> <input [(ngModel)]="orgName" name="orgName" type="text"  placeholder="Enter Organization name" required></div>
-                        </div>
-
-                        <div class="row">
-                                <div class="col-md-2"> Phone </div>
-                                <div class="col-md-8"> <input [(ngModel)]="phone" name="phone" type="text"  placeholder="Enter Phone Number" required></div>
-                        </div>
-
-                        <div class="row">
-                                <div class="col-md-2"> Additional Info </div>
-                                <div class="col-md-8"> 
-                                    <textarea [(ngModel)]="otherNotes" name="otherNotes"></textarea></div>
-                        </div>
-
-                        <div class="row">
-                                <div class="col-md-2"> Upload Business Card </div>
-                            </div>     
-                        <div class="row">       
-                                <div class="col-md-6" >
-                                    <app-webcam-component (imageClicked)="setImage($event)"></app-webcam-component>
-                                </div>
-                                <div class="col-md-2"> 
-                                    <input type="file" value="Upload the Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
-                                </div>
-                                
-                                <div class="col-md-4" *ngIf="base64Image" ><br> Here is Your Image <br>
-                                    <img   [src]="imagePath" class="rounded" style="height: 300px; width: 300 px;" id="bcImg"/>
-                                </div>
-                        </div>
-                        <div class="row">       
-                            
-                        </div>                
+                                        
                                
                     </div>
                     <div class="form-group">

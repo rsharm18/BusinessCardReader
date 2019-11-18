@@ -22,11 +22,11 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
 
   private businessCards:BusinessCardDataModel[] = [];
   
-  private currentBCard:BusinessCardDataModel;
+   currentBCard:BusinessCardDataModel;
 
-  private curindex:number = -1;
+   curindex:number = -1;
 
-  private bCards:Observable<BusinessCardDataModel[]>;
+  bCards:Observable<BusinessCardDataModel[]>;
 
   constructor(private route:Router, private bCardSerivces:BCardServicesService) 
   {
@@ -52,43 +52,6 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
     console.log(`${this.bCardSerivces.getCurrentUserName()}`)
     this.getAllData()
     
-    //if(this.db.collection(BCardConfig.collection_endpoint).get().
-    // this.bCardSerivces.currentBusinessCard.subscribe(bCard =>{
-    //   if(bCard!=null)
-    //   {
-    //     this.businessCards.push(bCard)
-    //   }
-
-    // });
-
-    // let obj1:any = {"name" : "Ravi Sharma"   ,   
-    //   "email":"a@a.com",      
-    //   "companyName":"A",
-    //   "userId":"ravi"     
-    //   }
-
-    //   let obj2:any = {"name" : "Foram Dalal"   ,   
-    //   "email" :"fd@gmail.com",      
-    //   "companyName" :"FD",
-    //   "userId" :"ravi"     
-    //   }
-
-    //   let obj3:any = {"name" : "Alex N"   ,   
-    //   "email" :"alexN@gmail.com",      
-    //   "companyName" :"Anchor",
-    //   "userId" :"ravi"     
-    //   }
-    //   let obj4:any = {"name" : "Carl P"   ,   
-    //   "email" :"CarlP@gmail.com",      
-    //   "companyName" :"Gnot",
-    //   "userId" :"ravi"     
-    //   }
-
-    //   this.bCardSerivces.addNewBcard(new BusinessCardDataModel(obj1));
-    //   this.bCardSerivces.addNewBcard(new BusinessCardDataModel(obj2));
-    //   this.bCardSerivces.addNewBcard(new BusinessCardDataModel(obj3));
-    //   this.bCardSerivces.addNewBcard(new BusinessCardDataModel(obj4));
-
   }
 
 
@@ -129,30 +92,19 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
     this.currentBCard = obj.bCard
     this.onOpen(true);
 
-    // this.curindex = obj.index;
-    // console.log(`index is ${obj.index}`);
-
-    // console.log(`this.businessCards['index'] ${this.businessCards[obj.index].$name}`)
-    // this.currentBCard = this.businessCards[obj.index];
-
-    // console.log(`received update request for ${obj.bCard.$name} ${obj['index']}`);
-    // console.log(`this.currentBCard ${this.currentBCard.$name}`)
-    // this.service.updateTodoItem(obj.item,obj.index);
    }
  
    deleteBCard(bCard:BusinessCardDataModel)
    {
 
     this.bCardSerivces.deleteBCard(bCard)
-
      console.log(`received delete request for ${bCard.$id}`);
-     //this.businessCards.splice(index, 1);
-     //this.service.deleteTodoItem(index);
    }
 
    saveBCard(obj:{bCard:BusinessCardDataModel,index:number,isNew:boolean})
    {
      console.log(` ${JSON.stringify(obj)}`);
+     this.onOpen(false);
      if(obj.isNew)
      {
        this.bCardSerivces.addNewBcard(obj.bCard);
@@ -190,57 +142,51 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
   onOpen(bool:boolean)
   {
     this.flag = bool;
+    this.blurBG();
+
     console.log("I am  here");
   }
 
-  flag:boolean;
+  flag:boolean = false;
 
 
-  searchByField(fieldName:string,fieldVal:string)
+  searchByField(obj)
   {
+    //fieldName:string,fieldValue:string,showAll:boolean
    console.log("called searchByName");
 
-  //  let arr:BusinessCardDataModel[] = new Array<BusinessCardDataModel>();
-  //   this.bCards= this.bCardSerivces.getAllRecords()
-  //    .pipe(
-  //     map(actions => {
-  //       console.log(` data actions ${actions} ======================== `)
-  //       return actions.map(a => {
-  
-  //        // console.log(`Data : ${JSON.stringify(a.payload.doc.data())}`)
-  //         //Get document data
-  //         let data:BusinessCardDataModel = a.payload.doc.data() as BusinessCardDataModel;
-  //         //Get document id
-  //         const id = a.payload.doc.id;
-  //         data.$id= id;
-  //         data.id= id;
 
-  //         console.log(` data userid ${data['userId']}`)
-  //         const ub = a.payload.doc.data().filter(item => item.userId == 'foram');
-         
-  //         //console.log(`~~~~~ id as ${id} --> ${data.$id}`)
-  //         //this.businessCards.push(data);
-  //         //Use spread operator to add the id to the document data
-  //         return ub;
-  //       });
-  //     })
-  //   )
-
-  if(fieldVal.length > 0)
+  if(obj.fieldName && obj.fieldName.length > 0)
   {
-  this.bCards = this.bCards.pipe(
-                    map( bcs => bcs.filter(bc =>{
-                      console.log(`this.bCards ${JSON.stringify(bc)}`)
-                       return bc[fieldName].toLowerCase().indexOf(fieldVal.toLowerCase()) >-1
-                    }) )
+      this.bCards = this.bCards
+                    .pipe(
+                          map( bcs => bcs.filter(bc =>
+                              {
+                                console.log(`this.bCards ${JSON.stringify(bc)}`)
+                                return bc[obj.fieldName].toLowerCase().indexOf(obj.fieldValue.toLowerCase()) >-1
+                               }
+                              ) 
+                        )
     )
-                  }
-                  else{
-                    this.getAllData();
-                  }
-    //console.log(` %%%%%%%%%%%%%%%%% ${arr} %%%%%%%%%%%%%`)
-   
-    
-   
+  }
+  else{
+      this.getAllData();
+  }
+      
+  }
+
+  blurMe:string="container";
+
+  blurBG()
+  {
+    console.log("blurrr me "+this.flag)
+    if(this.flag)
+    {
+      this.blurMe= "container blur-on blur-element"
+    }
+    else
+    {
+      this.blurMe= "container blur-off"
+    }
   }
 }

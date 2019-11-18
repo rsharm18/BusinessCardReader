@@ -20,13 +20,14 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
   @Output() onSaveBCard:EventEmitter<{bCard:BusinessCardDataModel,index:number,isNew:boolean}>;
 
   
-  private name:string;
-  private emailID:string;
-  private orgName:string;
-  private otherNotes:string
-  private phone:string
+   name:string;
+   emailID:string;
+   orgName:string;
+   otherNotes:string
+   phone:string
 
-
+   allowCamera:boolean;
+   
   files:File;
   base64Image:string = ""
   imagePath:SafeHtml;

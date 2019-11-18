@@ -1,3 +1,5 @@
+<div class="{{blurMe}}" style="width:90%;">
+
 <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
@@ -15,59 +17,24 @@
     </div>
   </nav>
   
-  
-<div class="container">
+
+
   <div class="row">
       <button type="button" class="btn btn-primary" (click)="onOpen(true)">Click to Add New Card</button>
   </div>
-  <div class="row">
+    <div>
+        <app-business-card-search-component (onFilterBusinessCards)="searchByField($event)"></app-business-card-search-component>
+    </div>
 
-      <form #searchForm="ngForm">
-          <div class="form-group">
-                <div class="row">
-                    <div class="col-md-2"> Name </div>
-                    <div class="col-md-6"> 
-                        <input name="name" type="text" class="form-control" placeholder="Enter Name" #name>
-                    </div>
-                    <div class="col-md-4"> 
-                        <button type="button" class="btn btn-primary" (click)="searchByField('name',name.value)">Search By Name</button>
-                    </div>
-                </div>
-                <div class="row">&nbsp;</div>
-                <div class="row">
-                    <div class="col-md-2"> Email </div>
-                    <div class="col-md-6"> 
-                        <input name="name" type="text" class="form-control" placeholder="Enter Email" #email>
-                    </div>
-                    <div class="col-md-4"> 
-                        <button type="button" class="btn btn-primary" (click)="searchByField('email',email.value)">Search By Email</button>
-                    </div>
-                </div>
-                <div class="row">&nbsp;</div>
-                <div class="row">
-                    <div class="col-md-2"> Search In Notes </div>
-                    <div class="col-md-6"> 
-                        <input name="name" type="text" class="form-control" placeholder="Enter Notes" #notes>
-                    </div>
-                    <div class="col-md-4"> 
-                        <button type="button" class="btn btn-primary" (click)="searchByField('otherInfo',notes.value)">Search By Notes</button>
-                    </div>
-                </div>
-              </div>
-        </form>
-
-      <button type="button" class="btn btn-primary" (click)="onOpen(true)">Click to Add New Card</button> &nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" (click)="getAllData()">Show All Business Cards</button>
-  </div>
-</div>
   
-<div class="container">
+<div class="row">
     <!-- <section id="header"> New Business Card
         <div class="row" >
               <app-new-business-card-component [bCard]=currentBCard [curindex]=curindex (onSaveBCard)="saveBCard($event)"></app-new-business-card-component>
           </div>
   </section><br><br> -->
-  <section id="body"> Uploaded Business Card
+  <section id="body"> 
+    <span>Business Card List</span>
     <div class="w-100" style="background-color: #eee;">
         <div class="w-100" *ngFor="let bCard of bCards  | async; index as i" width='100%'>
                 <app-business-card [bCard]=getBCardObj(bCard) [index]=i (onUpdateBCard)="updateBCard($event)" (onDeleteBCard)="deleteBCard($event)"></app-business-card>
@@ -76,16 +43,16 @@
   </section>
 
 </div>
+</div>
 
-<div class="container" style id="mydiv" *ngIf="flag">
-    <div class="row col align-self-end" style="align-items: flex-end;">
-      <button (click)="flag = !flag" class="btn">Close</button>
-    </div>
+<div class="container-fluid" id="mydiv" *ngIf="flag">
+    <div class="row align-self-end" style="float: right;" >
+      <button (click)="onOpen(!flag)" class="btn">Close</button>
+    </div><br><br>
     <div class="row">
       <app-new-business-card-component [bCard]=currentBCard [curindex]=curindex (onSaveBCard)="saveBCard($event)"></app-new-business-card-component>
     </div>
     <div class="row align-self-center">
-         <button (click)="flag = !flag" class="btn">Close</button>
+         <button (click)="onOpen(!flag)" class="btn">Close</button>
     </div>
   </div>
-  
