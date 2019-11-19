@@ -1,81 +1,106 @@
 
     <div class="continer">
+        <div class="row">
+
+                {{TextExtractionStatus }} 
+
+        </div>
         <div>
-                <form #f="ngForm">
+                <form #f="ngForm" autocomplete="off">
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="container">
                                     <div class="row">
                                             <div class="col-md-2"> Name </div>
                                             <div class="col-md-4"> 
-                                                <input [(ngModel)]="name" name="name" type="text" class="form-control" placeholder="Enter Name" required>
+                                                <input [(ngModel)]="name" name="name" id="name" type="text" class='form-control' placeholder='Enter Name' required />
                                             </div>
                                         </div>
                                         <div class="row">
                                                 <div class="col-md-2"> Email ID </div>
                                                 <div class="col-md-4"> 
-                                                        <input [(ngModel)]="emailID" name="emailID" type="email" class="form-control" placeholder="Enter Email ID" required >
+                                                <input [(ngModel)]="email" name="email" type="text" class="form-control" placeholder="Enter Email ID"  >
                                                 </div>
                                         </div>
                                         <div class="row">
                                                 <div class="col-md-2"> Organization Name </div>
                                                 <div class="col-md-4">
-                                                     <input [(ngModel)]="orgName" name="orgName" type="text"   class="form-control" placeholder="Enter Organization name" required></div>
+                                                     <input [(ngModel)]="companyName" name="companyName" type="text"   class="form-control" placeholder="Enter Organization name" ></div>
                                         </div>
                 
                                         <div class="row">
                                                 <div class="col-md-2"> Phone </div>
                                                 <div class="col-md-4"> 
-                                                    <input [(ngModel)]="phone" name="phone" type="text"   class="form-control" placeholder="Enter Phone Number" required></div>
+                                                    <input [(ngModel)]="phoneNumber" name="phoneNumber" type="text"   class="form-control" placeholder="Enter Phone Number" ></div>
                                         </div>
                 
                                         <div class="row">
                                                 <div class="col-md-2"> Additional Info </div>
                                                 <div class="col-md-4"> 
-                                                    <textarea [(ngModel)]="otherNotes" name="otherNotes"  class="form-control" rows="3"></textarea></div>
+                                                    <textarea [(ngModel)]="otherInfo" name="otherInfo"  class="form-control" rows="3"></textarea></div>
                                         </div>
                 
-                                        <div class="divIncenter row">
-                                                    <div class="col-md-2"> 
-                                                            <button name="browseFile">Browse Business Card</button>
-                                                            <input type="file" value="Browse Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
-                                                        </div>
-                                                    <div class="col-md-2"> 
-                                                        <button name="browseFile" (click)="allowCamera=!allowCamera">
-                                                            <span *ngIf="!allowCamera">Open Camera</span>
-                                                            <span *ngIf="allowCamera">Close Camera</span>
-                                                        </button>
-                                                </div>
-                                        </div>
                                         <div class="row">
-                                                <div class="col-md-2"> Upload Business Card </div>
-                                            </div>     
-                                        
-                                        <div class="row">       
-                                            
+                                                    
                                         </div>
                                     </div>
                             </div>
                             <div class="col-md-6">
 
-                                    <div class="divIncenter row" *ngIf="allowCamera">       
-                                            <div class="col-md-6" >
-                                                <app-webcam-component (imageClicked)="setImage($event)"></app-webcam-component>
-                                            </div>
-                                           
+                                        <div  >    
                                             
-                                            <div class="col-md-4" *ngIf="base64Image" ><br> Here is Your Image <br>
-                                                <img   [src]="imagePath" class="rounded" style="height: 300px; width: 300 px;" id="bcImg"/>
-                                            </div>
-                                    </div>
+                                            <table>
+                                                <tr>
+                                                    <td style="position: relative;left: 4%;">
+                                                        <table>
+                                                                <tr>
+                                                                    <td>
+                                                                            <img   [src]="imagePath" class="rounded" style="height: 200px; width: 300 px;" id="bcImg"/>    
+                                                                            
+                                                                    </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                        <td>
+                                                                                <button name="browseFile" (click)="fileInput.click()">Browse Business Card</button>
+                                                                                <input style="display: none" #fileInput type="file" value="Browse Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
+                                                                        </td>
+                                                                </tr>
+
+                                                                <tr>
+                                                                        <td>
+                                                                                <a href="#" name="browseFile" (click)="allowCamera=!allowCamera" ngClass="{{getClassName()}}">
+                                                                                        <span *ngIf="!allowCamera">Open Camera</span>
+                                                                                        <span *ngIf="allowCamera">Close Camera</span>
+                                                                                </a>
+
+                                                                        </td>
+                                                                </tr>
+
+                                                        </table>
+                                                            
+                                                    </td>
+                                                    <td> &nbsp;&nbsp;&nbsp; </td>
+                                                    <td >
+                                                        <div *ngIf="allowCamera">
+                                                                <app-webcam-component (imageClicked)="setImage($event,true)"></app-webcam-component>
+
+                                                        </div>
+
+                                                    </td> 
+
+                                                    </tr>
+                                            </table>
+                                        </div>
+                                  
                             </div>
                         </div>
-                                        
+                                      
                                
                     </div>
                     <div class="form-group">
-                            <button class="btn btn-primary" [disabled]="!f.form.valid" (click)="saveBCard()">
+                            <button type="button" class="btn btn-primary" [disabled]="!f.form.valid" (click)="saveBCard(f)">
                                 Save Business Card
                             </button>
                             &nbsp;

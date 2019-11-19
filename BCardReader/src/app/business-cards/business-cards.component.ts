@@ -26,6 +26,8 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
 
    curindex:number = -1;
 
+   docID:string="NA";
+
   bCards:Observable<BusinessCardDataModel[]>;
 
   constructor(private route:Router, private bCardSerivces:BCardServicesService) 
@@ -87,9 +89,11 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
   updateBCard(obj:{bCard:BusinessCardDataModel,id:string})
   {
 
-    //console.log(`data ====== ${JSON.stringify(obj)}`)
+    console.log(`updateBCard --- data ====== ${obj.id}`)
     
     this.currentBCard = obj.bCard
+    this.docID = obj.id;
+
     this.onOpen(true);
 
    }
@@ -101,20 +105,19 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
      console.log(`received delete request for ${bCard.$id}`);
    }
 
-   saveBCard(obj:{bCard:BusinessCardDataModel,index:number,isNew:boolean})
+   saveBCard(obj:{docID:string,bCard:BusinessCardDataModel,index:number,isNew:boolean})
    {
-     console.log(` ${JSON.stringify(obj)}`);
-     this.onOpen(false);
+     console.log(` saveBCard - ${obj.docID}`);
+     
      if(obj.isNew)
      {
        this.bCardSerivces.addNewBcard(obj.bCard);
      }
      else
      {
-      this.bCardSerivces.updateBCard(obj.bCard.$id, obj.bCard);
-
-       this.bCardSerivces.addNewBcard(obj.bCard);
+      this.bCardSerivces.updateBCard(obj.docID, obj.bCard);
      }
+     this.onOpen(false);
 
    }
 
@@ -141,7 +144,14 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
 
   onOpen(bool:boolean)
   {
-    this.flag = bool;
+    console.log("invoked onOpen");
+    
+    this.flag = bool; 
+    if(!bool)
+    {
+      this.currentBCard = null;
+      this.docID=null;
+    }
     this.blurBG();
 
     console.log("I am  here");

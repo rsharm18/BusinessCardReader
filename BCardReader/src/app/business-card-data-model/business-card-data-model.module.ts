@@ -9,7 +9,7 @@ export class BusinessCardDataModel {
    userId:string;
   private companyName:string;
   private imageurl:string;
-  private phoneNumber:number;
+  private phoneNumber:string;
   private otherInfo:string
   
 
@@ -116,17 +116,17 @@ export class BusinessCardDataModel {
 
    /**
      * Getter $phoneNumber
-     * @return {number}
+     * @return {string}
      */
-	public get $phoneNumber(): number {
+	public get $phoneNumber(): string {
 		return this.phoneNumber;
 	}
 
     /**
      * Setter $phoneNumber
-     * @param {number} value
+     * @param {string} value
      */
-	public set $phoneNumber(value: number) {
+	public set $phoneNumber(value: string) {
 		this.phoneNumber = value;
      }
      

@@ -20,7 +20,7 @@
 
 
   <div class="row">
-      <button type="button" class="btn btn-primary" (click)="onOpen(true)">Click to Add New Card</button>
+      <button type="button" class="btn btn-success" (click)="onOpen(true)">Click to Add New Card</button>
   </div>
     <div>
         <app-business-card-search-component (onFilterBusinessCards)="searchByField($event)"></app-business-card-search-component>
@@ -50,7 +50,7 @@
       <button (click)="onOpen(!flag)" class="btn">Close</button>
     </div><br><br>
     <div class="row">
-      <app-new-business-card-component [bCard]=currentBCard [curindex]=curindex (onSaveBCard)="saveBCard($event)"></app-new-business-card-component>
+      <app-new-business-card-component [docID]="docID" [bCard]=currentBCard [curindex]=curindex (onSaveBCard)="saveBCard($event)"></app-new-business-card-component>
     </div>
     <div class="row align-self-center">
          <button (click)="onOpen(!flag)" class="btn">Close</button>

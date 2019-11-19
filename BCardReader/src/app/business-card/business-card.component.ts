@@ -31,14 +31,14 @@ export class BusinessCardComponent implements OnInit {
   ngOnInit() {
     this.id = this.bCard.id;
 
-    console.log(` ******************************************
-    this.bCard.$name = ${this.bCard.$name}
-    this.bCard.$email= ${this.bCard.$email}
-    this.bCard.$companyName= ${this.bCard.$companyName}
+    // console.log(` ******************************************
+    // this.bCard.$name = ${this.bCard.$name}
+    // this.bCard.$email= ${this.bCard.$email}
+    // this.bCard.$companyName= ${this.bCard.$companyName}
     
-    this.bCard.$userId= ${this.bCard.$userId}
-    this.bCard.$id = ${this.bCard.$id}
-    `)
+    // this.bCard.$userId= ${this.bCard.$userId}
+    // this.bCard.$id = ${this.bCard.$id}
+    // `)
     this.getImage();
    }
 

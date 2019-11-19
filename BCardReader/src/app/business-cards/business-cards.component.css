@@ -1,13 +1,14 @@
 #mydiv {
     position:fixed;
-    top: 40%;
+    top: 30%;
     left: 30%;
-    width:70em;
-    height:70%;
+    width: 80%;
+    height:80%;
     margin-top: -9em; /*set to a negative number 1/2 of your height*/
     margin-left: -15em; /*set to a negative number 1/2 of your width*/
     border: 1px solid #ccc;
     background-color: #f3f3f3;
+    overflow: auto;
 }
 
 .blur-on, .blur-element {

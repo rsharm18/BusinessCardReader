@@ -11,20 +11,22 @@ import { environment } from 'src/environments/environment';
   selector: 'app-new-business-card-component',
   templateUrl: './new-business-card-component.component.html',
   styleUrls: ['./new-business-card-component.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
 
   @Input() bCard:BusinessCardDataModel;
+  @Input() docID:string;
   @Input() curindex:number;
-  @Output() onSaveBCard:EventEmitter<{bCard:BusinessCardDataModel,index:number,isNew:boolean}>;
+  @Output() onSaveBCard:EventEmitter<{docID:string,bCard:BusinessCardDataModel,index:number,isNew:boolean}>;
 
   
+  
    name:string;
-   emailID:string;
-   orgName:string;
-   otherNotes:string
-   phone:string
+   email:string;
+   companyName:string;
+   otherInfo:string
+   phoneNumber:string
 
    allowCamera:boolean;
    
@@ -32,7 +34,8 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
   base64Image:string = ""
   imagePath:SafeHtml;
    showImage:boolean = false;
-
+  
+  TextExtractionStatus="";
   private editMode:boolean=false;
   
   constructor(public bCardSerivces:BCardServicesService,private _sanitizer: DomSanitizer, private http: HttpClient) {
@@ -40,43 +43,53 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
    }
 
   ngOnInit() {
-    console.log(`input in the new component ${this.bCard}`);
-
-    console.log(` ****************** input in the new component ${this.bCard} ******************`);
+    
+    console.log(` ****************** input in the new component ${this.bCard && this.bCard.$name || ""} ******************`);
 
     // this.imagePath = "../../assets/no-image-found.jpg";
 
-    if(this.bCard)
-    {
-      this.name = this.bCard.$name
-      this.emailID  = this.bCard.$email
-      this.orgName = this.bCard.$companyName
-    }
-    else{
-      this.name = ""
-      this.emailID  = ""
-      this.orgName = ""
+      this.name       = this.bCard && this.bCard.$name               || '';
+      this.email    = this.bCard && this.bCard.$email              || null;
+      this.companyName    = this.bCard && this.bCard.$companyName        || null;
+      this.phoneNumber      = this.bCard && this.bCard.$phoneNumber        || null;
+      this.otherInfo  = this.bCard && this.bCard.$otherInfo          || null  ;
 
-      console.log("**************** in else **************")
-    }
-
+      
+      if (this.bCard)
+      {
+        console.log("found this.bCArd")
+        if(this.bCard.$imageurl.endsWith('no-image-found.jpg'))
+        {
+            this.imagePath = this.bCard.$imageurl;
+        }
+        else{
+        this.setImage(this.bCard.$imageurl,false);
+        }
+      }
+      else
+        this.imagePath ="../../assets/no-image-found.jpg";
+   
+      this.TextExtractionStatus="";
     //document.getElementById("imgDiv").style.display="none";
   }
   
+  //called when the BCardDatamodel ref is updated
   ngOnChanges(changes: SimpleChanges) {
     const name: SimpleChange = changes.bCard;
     const index:SimpleChange = changes.curindex;
 
-    console.log('prev value: ', name.previousValue);
-    console.log('got name: ', name.currentValue);
+    console.log(`you invoked onChange on New card compoenet ${this.docID}`)
    // console.log(`cusIndex ${this.curindex} ${JSON.stringify(this.bCard)}`);
 
     if(this.bCard)
     {
+      console.log(`ngOnChanges this is an update task ${this.docID}`)
+
       this.editMode = true;
+
       this.name = this.bCard.$name
-      this.emailID  = this.bCard.$email
-      this.orgName = this.bCard.$companyName;
+      this.email  = this.bCard.$email
+      this.companyName = this.bCard.$companyName;
       this.imagePath = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
       + this.bCard.$imageurl);
     }
@@ -87,43 +100,47 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
 
   
 
+  /**
+   * SAVE THE BUSINESS CARD 
+   */
+
   saveBCard()
   {
 
+
+    //do not add id as it overlaps with document's id
     let obj:any = {
       "name"        : this.name  ,   
-      "email"       : this.emailID,      
-      "companyName" : this.orgName,
+      "email"       : this.email,      
+      "companyName" : this.companyName,
       "imageurl"    : this.base64Image?this.base64Image: "../../assets/no-image-found.jpg",
       "userId"      : this.bCardSerivces.username?this.bCardSerivces.username:"ravi" , 
-      "otherInfo"   : this.otherNotes,  
-      "phoneNumber" : this.phone
+      "otherInfo"   : this.otherInfo,  
+      "phoneNumber" : this.phoneNumber
       }
 
-    //let bCard:BusinessCardDataModel =  new BusinessCardDataModel(obj)
-    
-    this.onSaveBCard.emit({bCard:obj,index:this.curindex,isNew:!this.editMode});
+      //this.onSaveBCard.emit({docID:this.docID,bCard:obj,index:this.curindex,isNew:!this.editMode});
     
   }
+
 
   saveReset()
   {
       console.log("clicked on Reste")
       this.name = ""
-      this.emailID  =""
-      this.orgName = ""
+      this.email  =""
+      this.companyName = ""
       this.base64Image="";
       this.imagePath="../../assets/no-image-found.jpg";
-      this.otherNotes="";
-      this.phone="";
+      this.otherInfo="";
+      this.phoneNumber="";
 
       this.editMode = false;
 
   }
 
   
-  
-
+  //convert the uploaded image to base64
   changeListener(event) {
     
     this.files = event.target.files[0];
@@ -134,7 +151,6 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
 
 }
 
-
 _handleReaderLoaded(readerEvt) {
     var binaryString = readerEvt.target.result;
     this.base64Image = btoa(binaryString);  // Converting binary string data.
@@ -144,33 +160,37 @@ _handleReaderLoaded(readerEvt) {
     this.imagePath = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
                  + this.base64Image);
     this.showImage = true
-    this.setImage(this.base64Image)
-
-   
-    
-    this.readTextFromImage();
+    this.setImage(this.base64Image,true)
 
     $("#bcImg").attr("src", 'data:image/jpg;base64,'+ this.base64Image);
-    console.log(`imagePath ${this.imagePath}`)
+    
+    
+    this.TextExtractionStatus=" Please wait Reaading Image....";
 
-    console.log(` ******************* this.base64Image ${this.base64Image} !!!!!!!!!!~~@@@************88`)
-    //console.log("generated the base64Image "+this.base64Image+"\n **************")
-    //document.getElementById("imgDiv").setAttribute("src",this.imagePath);
-    //document.getElementById("imgDiv").style.display="block";
+    this.readTextFromImage();
+
+    // console.log(`imagePath ${this.imagePath}`)
+
+    // console.log(` ******************* this.base64Image ${this.base64Image} !!!!!!!!!!~~@@@************88`)
+  
 }
 
-
-setImage(b64String:string)
+/**
+ * 
+ * @param b64String takes a base64 image as input
+ */
+setImage(b64String:string,allowReadText:boolean)
 {
   this.base64Image=b64String;
 
   this.imagePath = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
                  + this.base64Image);
-  console.log( `b64String : ${b64String}`)
-  this.readTextFromImage();
+  //console.log( `b64String : ${b64String}`)
+  if(allowReadText)
+    this.readTextFromImage();
 }
 
-
+//call the google vision api to extract the text
 readTextFromImage()
 {
 
@@ -226,50 +246,27 @@ readTextFromImage()
 
 parseData(data: string) {
 
-
-
-  //console.log(`data = ${data}`);
-
-
-
-  // initialize the values to remove old data if still present 
-
+  // reinitialize the values to remove old data if still present 
   this.name=""
-  this.phone = '';
-  this.emailID = "";
-  this.orgName = "";
-  this.otherNotes = "";
+  this.phoneNumber = '';
+  this.email = "";
+  this.companyName = "";
+  this.otherInfo = "";
 
   var data1 = data.split('\n');
 
-
-
   data1.forEach(row => {
 
-    //console.log(`data2 = ${ data2 }`);
-
-    //console.log(`data2 is index = ${ data2.search(/@/i) }`);
-
-
-
+    // check for email 
     if(row.search(/^[^\s@]+@[^\s@]+\.[^\s@]+$/i) >= 0) {
-
-      // check for email 
-
-      //console.log(`data2 is email = ${ data2 }`);
-
-      this.emailID = row;
+      this.email = row;
 
     }
-
+    //check for phone
     else if(row.toUpperCase().indexOf("PHONE")>-1 || row.toUpperCase().indexOf("MOBILE")>-1 || row.search(/^[(]{0,1}[0-9]{3}[)]{0,1}[-\s\.]{0,1}[0-9]{3}[-\s\.]{0,1}[0-9]{4}$/) >= 0) {
 
-      // check for phone number 
-
-      //console.log(`data2 is phone = ${ data2 }`);
-
       row = row.toUpperCase();
-      console.log(`${row.indexOf("PHONE")} ${row.indexOf("MOBILE")} ${row.indexOf(":")}`)
+      
       if(row.indexOf("PHONE")>-1)
       {
         row = row.replace("PHONE","");
@@ -285,16 +282,16 @@ parseData(data: string) {
         row = row.replace(":","");
       }
 
-      this.phone = row;
+      this.phoneNumber = row;
 
     } else if(row.search(/^[A-Za-z\s]+$/i) >= 0) {
 
-      this.name = row;
+     // this.name = row;
 
     } else {
 
       // store all the extra text 
-      this.otherNotes = this.otherNotes + row+ " \n ";
+      this.otherInfo = this.otherInfo + row+ " \n ";
 
     }
 
@@ -303,27 +300,18 @@ parseData(data: string) {
   })
 
 
+ console.log(`Full Name = ${ this.name }`);
+ console.log(`Phone = ${ this.phoneNumber }`);
+ console.log(`Email = ${ this.email }`);
+ console.log(`Extra Text = ${ this.companyName }`);
+ console.log(`Extra Text = ${ this.otherInfo }`);
 
-
-  
-
-  console.log(`Full Name = ${ this.name }`);
-
-  
-
-  console.log(`Phone = ${ this.phone }`);
-
-  console.log(`Email = ${ this.emailID }`);
-
-  console.log(`Extra Text = ${ this.orgName }`);
-
-  console.log(`Extra Text = ${ this.otherNotes }`);
-
-  
-
-
-
+ this.TextExtractionStatus=" Text reading is complete. Please review and make changes as neccessary....";
 }
 
+getClassName():string
+{
+  return (!this.allowCamera)?"cameraOpen":"cameraClose";
+}
 
 }
