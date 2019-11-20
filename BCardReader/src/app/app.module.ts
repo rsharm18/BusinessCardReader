@@ -20,6 +20,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import {  AngularFireDatabaseModule } from '@angular/fire/database';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BusinessCardSearchComponentComponent } from './business-card-search-component/business-card-search-component.component';
+import { VerifyEmailComponentComponent } from './verify-email-component/verify-email-component.component';
+import { BCardAuthServiceService } from './bcard-auth-service.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,8 @@ import { BusinessCardSearchComponentComponent } from './business-card-search-com
     NotFoundComponent,
     NewBusinessCardComponentComponent,
     WebcamComponentComponent,
-    BusinessCardSearchComponentComponent
+    BusinessCardSearchComponentComponent,
+    VerifyEmailComponentComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,7 @@ import { BusinessCardSearchComponentComponent } from './business-card-search-com
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule // imports firebase/storage only needed for storage features
   ],
-  providers: [],
+  providers: [BCardAuthServiceService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

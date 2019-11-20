@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { NotFoundComponent } from '../not-found/not-found.component';
 import { BusinessCardsComponent } from '../business-cards/business-cards.component';
 import { AuthGuardGuard } from '../auth-guard.guard';
+import { VerifyEmailComponentComponent } from '../verify-email-component/verify-email-component.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent }, 
@@ -19,6 +20,10 @@ const appRoutes: Routes = [
   {
     path: "**",
     component: NotFoundComponent
+  },
+  {
+    path: 'verify-email-address', 
+    component: VerifyEmailComponentComponent
   }
 ];
 
