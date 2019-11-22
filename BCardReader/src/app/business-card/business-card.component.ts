@@ -14,7 +14,7 @@ export class BusinessCardComponent implements OnInit {
  @Input() index:number;
 
  @Input() bCard:BusinessCardDataModel;
-  
+
 
  @Output() onUpdateBCard: EventEmitter<{bCard:BusinessCardDataModel,id:string}>;
  @Output() onDeleteBCard: EventEmitter<BusinessCardDataModel>;
@@ -66,6 +66,11 @@ export class BusinessCardComponent implements OnInit {
   }
   updateBCard()
   {
+
+    if(!confirm("Update Request Received for "+this.bCard.$name+"!! \n Are you sure?"))
+    {
+      return false;
+    }
     console.log(`is instance ? ${ this.bCard instanceof BusinessCardDataModel}`);
     console.log(`triggering updated for ${this.bCard} and ${this.bCard.$id}`);
 
@@ -85,9 +90,23 @@ export class BusinessCardComponent implements OnInit {
   }
   deleteBCard()
   {
+    if(!confirm("Delete Request Received for "+this.bCard.$name+"!! \nThis can't be undone \n Are you sure?"))
+    {
+      return false;
+    }
     console.log(`triggering updated for ${this.bCard} and ${this.bCard.$id}`);
     this.onDeleteBCard.emit(this.bCard);
   }
 
+  viewImageInNewPage()
+  {
+    let w = window.open('about:blank');
+    let image = new Image();
+    image.src = 'data:image/jpg;base64,' + this.bCard.$imageurl;
+    setTimeout(function(){
+      w.document.write(image.outerHTML);
+    }, 0);
+
+  }
 
 }

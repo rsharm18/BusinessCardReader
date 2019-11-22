@@ -22,7 +22,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BusinessCardSearchComponentComponent } from './business-card-search-component/business-card-search-component.component';
 import { VerifyEmailComponentComponent } from './verify-email-component/verify-email-component.component';
 import { BCardAuthServiceService } from './bcard-auth-service.service';
-
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
+import { LoadingSpinnerComponent } from './loading-spinner/loading-spinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +35,10 @@ import { BCardAuthServiceService } from './bcard-auth-service.service';
     NewBusinessCardComponentComponent,
     WebcamComponentComponent,
     BusinessCardSearchComponentComponent,
-    VerifyEmailComponentComponent
+    VerifyEmailComponentComponent,
+    ForgotPasswordComponent,
+    SignUpComponent,
+    LoadingSpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -47,8 +52,9 @@ import { BCardAuthServiceService } from './bcard-auth-service.service';
     AngularFirestoreModule, // imports firebase/firestore, only needed for database features
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features,
     AngularFireStorageModule // imports firebase/storage only needed for storage features
+  
   ],
-  providers: [BCardAuthServiceService],
+  providers: [BCardAuthServiceService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,28 +1,41 @@
-
-<div class="body">
-<div class="login">
-
-    <div *ngIf="inValidLogin && showInValidLoginMsg" class="alert alert-danger">Incorrect user name and password</div>
-    
-    <form #loginForm="ngForm"  (ngSubmit)="checkLog()">
-      <table>
-        <tr>
-          <td>User Name</td>
-          <td class="form-group">
-            <input type="text" placeholder="Enter your user ID" required class="form-control" [(ngModel)]="email" name="  ">
-          </td>
-        </tr>
-        <tr>
-            <td>User Password</td>
-            <td class="form-group">
-              <input type="password" placeholder="Enter your password" required class="form-control" [(ngModel)]="password" name="password">
-            </td>
-          </tr>
-          <tr>
-              <td colspan="2"><input type="submit" value="Login" class="btn btn-primary" [disabled]="!loginForm.valid">
-              </td>
-            </tr>
-      </table>
-    </form>
+  <div class="body">
+    <div class="login">
+  
+      <div class="authBlock">
+        <h3>Sign In</h3>
+        <div class="formGroup">
+          <input type="text" class="formControl" placeholder="Username" #userName required>
+        </div>
+  
+        <div class="formGroup">
+          <input type="password" class="formControl" placeholder="Password" #userPassword required>
+        </div>
+  
+        <!-- Calling SignIn Api from AuthService -->
+        <div class="formGroup">
+          <input type="button" class="btn btnPrimary" value="Log in" (click)="authService.signIn(userName.value, userPassword.value)">
+        </div>
+  
+        <div class="formGroup">
+          <span class="or"><span class="orInner">Or</span></span>
+        </div>
+  
+        <!-- Calling GoogleAuth Api from AuthService -->
+        <div class="formGroup">
+          <button type="button" class="btn googleBtn" (click)="authService.GoogleAuth()">
+            <i class="fab fa-google-plus-g"></i>
+            Log in with Google
+          </button>
+        </div>
+  
+        <div class="forgotPassword">
+          <span routerLink="/forgot-password">Forgot Password?</span>
+        </div>
+      </div>
+  
+      <div class="redirectToLogin">
+        <span>Don't have an account?<span class="redirect" routerLink="/register-user"> Sign Up</span></span>
+      </div>
+  
     </div>
-  </div>   
+  </div>

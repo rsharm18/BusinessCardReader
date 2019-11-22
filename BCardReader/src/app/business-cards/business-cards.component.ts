@@ -11,6 +11,7 @@ import { AngularFirestoreCollection, AngularFirestore } from '@angular/fire/fire
 import { BCardConfig } from '../app.config';
 import { transformAll } from '@angular/compiler/src/render3/r3_ast';
 import { getLocaleDateFormat } from '@angular/common';
+import { BCardAuthServiceService } from '../bcard-auth-service.service';
 
 @Component({
   selector: 'app-business-cards',
@@ -27,26 +28,28 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
    curindex:number = -1;
 
    docID:string="NA";
+   showSearchForm:boolean = false;
 
   bCards:Observable<BusinessCardDataModel[]>;
 
-  constructor(private route:Router, private bCardSerivces:BCardServicesService) 
+  constructor(private route:Router, private bCardSerivces:BCardServicesService, private authService:BCardAuthServiceService) 
   {
 
    
   }
 
+  
 
   getUser()
   {
-    return this.bCardSerivces.getCurrentUserName();
+    return this.bCardSerivces.getCurrentUserName().indexOf("@")>-1? this.bCardSerivces.getCurrentUserName().split("@")[0]:this.bCardSerivces.getCurrentUserName();;
   }
   logoutMe()
   {
-    console.log("you clicked logout");
 
-    this.bCardSerivces.setLoggedIn(false);
-    this.route.navigate(["/login"]);
+    
+    console.log("you clicked logout");
+    this.authService.SignOut();
 
   }
   ngOnInit() {
@@ -59,6 +62,7 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
 
   getAllData()
   {
+    this.dataFound=false;
     this.bCards = this.bCardSerivces.getAllRecords()
     .pipe(
       map(actions => {
@@ -67,6 +71,7 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
           //console.log(`Data : ${JSON.stringify(a.payload.doc.data())}`)
           //Get document data
           let data:BusinessCardDataModel = a.payload.doc.data() as BusinessCardDataModel;
+          this.dataFound=true;
           //Get document id
           const id = a.payload.doc.id;
           data.$id= id;
@@ -121,11 +126,11 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
 
    }
 
-   ngOnDestroy(): void {
-     console.log("resetting the login");
-    //this.bCardSerivces.setLoggedIn(false)
-  }
-
+   ngOnDestroy()
+   {
+     this.bCards = null;
+     
+   }
 //
   getBCardObj(obj):BusinessCardDataModel
   {
@@ -164,7 +169,7 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
   {
     //fieldName:string,fieldValue:string,showAll:boolean
    console.log("called searchByName");
-
+   this.dataFound=false;
 
   if(obj.fieldName && obj.fieldName.length > 0)
   {
@@ -172,6 +177,7 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
                     .pipe(
                           map( bcs => bcs.filter(bc =>
                               {
+                                this.dataFound=true;
                                 console.log(`this.bCards ${JSON.stringify(bc)}`)
                                 return bc[obj.fieldName].toLowerCase().indexOf(obj.fieldValue.toLowerCase()) >-1
                                }
@@ -180,10 +186,22 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
     )
   }
   else{
-      this.getAllData();
-  }
+    this.showAll();
+
       
   }
+
+  
+      
+  }
+
+  showAll()
+  {
+    this.getAllData();
+  }
+
+  dataFound:boolean = false;
+
 
   blurMe:string="container";
 
@@ -199,4 +217,9 @@ export class BusinessCardsComponent implements OnInit,OnDestroy {
       this.blurMe= "container blur-off"
     }
   }
+
+getClass():string{
+  return this.showSearchForm?"btn btn-dark":"btn btn-success";
+}
+
 }

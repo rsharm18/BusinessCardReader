@@ -1,9 +1,8 @@
-<div class="row">
+<div class="row" >
 
         <form #searchForm="ngForm">
             <div class="form-group">
                   <div class="row">
-                      <div class="col-md-2"> Name </div>
                       <div class="col-md-6"> 
                           <input name="name" type="text" class="form-control " placeholder="Enter Name" #name>
                       </div>
@@ -13,8 +12,7 @@
                   </div>
                   <div class="row">&nbsp;</div>
                   <div class="row">
-                      <div class="col-md-2"> Email </div>
-                      <div class="col-md-6"> 
+                     <div class="col-md-6"> 
                           <input name="name" type="text" class="form-control" placeholder="Enter Email" #email>
                       </div>
                       <div class="col-md-4"> 
@@ -23,7 +21,6 @@
                   </div>
                   <div class="row">&nbsp;</div>
                   <div class="row">
-                      <div class="col-md-2"> Search In Notes </div>
                       <div class="col-md-6"> 
                           <input name="name" type="text" class="form-control" placeholder="Enter Notes" #notes>
                       </div>
@@ -34,5 +31,5 @@
                 </div>
           </form>  
         <!-- <button type="button" class="btn btn-primary" (click)="onOpen(true)">Click to Add New Card</button> &nbsp;&nbsp; -->
-        <button type="button" class="btn btn-primary" (click)="searchByField('','',true)">Show All Business Cards</button>
+        <!-- <button type="button" class="btn btn-primary" (click)="searchByField('','',true)">Show All Business Cards</button> -->
     </div>

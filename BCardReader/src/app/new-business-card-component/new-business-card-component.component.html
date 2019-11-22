@@ -1,10 +1,9 @@
 
-    <div class="continer">
-        <div class="row">
-
-                {{TextExtractionStatus }} 
-
+    <div class="container-fluid">
+        <div class="row" *ngIf="showSpinner">
+                <app-loading-spinner></app-loading-spinner>
         </div>
+
         <div>
                 <form #f="ngForm" autocomplete="off">
                     <div class="form-group">
@@ -20,7 +19,7 @@
                                         <div class="row">
                                                 <div class="col-md-2"> Email ID </div>
                                                 <div class="col-md-4"> 
-                                                <input [(ngModel)]="email" name="email" type="text" class="form-control" placeholder="Enter Email ID"  >
+                                                <input [(ngModel)]="email" name="email" type="email" class="form-control" placeholder="Enter Email ID"  >
                                                 </div>
                                         </div>
                                         <div class="row">
@@ -42,7 +41,19 @@
                                         </div>
                 
                                         <div class="row">
-                                                    
+                                                <div class="divIncenter form-group ">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                            <button type="button" class="btn btn-primary" [disabled]="!f.form.valid" (click)="saveBCard()">
+                                                                Save Business Card
+                                                            </button>
+                                                            &nbsp;
+                                                            <button class="btn btn-secondary"  (click)="saveReset()" type="reset">
+                                                                    Reset
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                            </div>    
                                         </div>
                                     </div>
                             </div>
@@ -54,29 +65,31 @@
                                                 <tr>
                                                     <td style="position: relative;left: 4%;">
                                                         <table>
+                                                                <tr *ngIf="allowCamera">
+                                                                        <td>
+                                                                                <button name="browseFile" (click)="allowCamera" ngClass="{{getClassName()}}">
+                                                                                        Close Camera                                                                               </button>
+                                                                                <br><br>
+                                                                                
+                                                                        </td>
+                                                                </tr>
+
                                                                 <tr>
                                                                     <td>
-                                                                            <img   [src]="imagePath" class="rounded" style="height: 200px; width: 300 px;" id="bcImg"/>    
+                                                                            <img   [src]="imagePath" class="rounded" style="height: 200px; width: 250px;" id="bcImg"/>    
                                                                             
                                                                     </td>
                                                                 </tr>
 
                                                                 <tr>
                                                                         <td>
-                                                                                <button name="browseFile" (click)="fileInput.click()">Browse Business Card</button>
+                                                                                <br>
+                                                                                <button name="browseFile" (click)="fileInput.click()" class="btn btn-info">Browse Business Card</button>
                                                                                 <input style="display: none" #fileInput type="file" value="Browse Business Card" accept="image/*"  name="inputFile" (change)="changeListener($event)">
                                                                         </td>
                                                                 </tr>
 
-                                                                <tr>
-                                                                        <td>
-                                                                                <a href="#" name="browseFile" (click)="allowCamera=!allowCamera" ngClass="{{getClassName()}}">
-                                                                                        <span *ngIf="!allowCamera">Open Camera</span>
-                                                                                        <span *ngIf="allowCamera">Close Camera</span>
-                                                                                </a>
-
-                                                                        </td>
-                                                                </tr>
+                                                                
 
                                                         </table>
                                                             
@@ -87,7 +100,13 @@
                                                                 <app-webcam-component (imageClicked)="setImage($event,true)"></app-webcam-component>
 
                                                         </div>
+                                                        <div *ngIf="!allowCamera" class="divIncenter container-fluid">
+                                                                &nbsp;&nbsp;&nbsp;<button name="browseFile" (click)="allowCamera=!allowCamera" ngClass="{{getClassName()}}">
+                                                                        <span *ngIf="!allowCamera">Open Camera</span>
+                                                                        <span *ngIf="allowCamera">Close Camera</span>
+                                                                </button>
 
+                                                        </div>
                                                     </td> 
 
                                                     </tr>
@@ -99,16 +118,17 @@
                                       
                                
                     </div>
-                    <div class="form-group">
-                            <button type="button" class="btn btn-primary" [disabled]="!f.form.valid" (click)="saveBCard()">
-                                Save Business Card
-                            </button>
-                            &nbsp;
-                            <button class="btn btn-secondary"  (click)="saveReset()" type="reset">
-                                    Reset
-                                </button>
-                            </div>
-                            <div  class="w-100"></div>
+                    
+                         
                         </form>
         </div>
+
+       
 </div>
+
+
+<div class=" divIncenter p-3 mb-2 bg-light text-dark">
+
+        <p class="text-primary"><b>{{TextExtractionStatus }} </b> </p>
+    
+</div> <br><br>

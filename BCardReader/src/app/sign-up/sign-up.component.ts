@@ -2,11 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { BCardAuthServiceService } from '../bcard-auth-service.service';
 
 @Component({
-  selector: 'app-verify-email-component',
-  templateUrl: './verify-email-component.component.html',
-  styleUrls: ['./verify-email-component.component.css']
+  selector: 'app-sign-up',
+  templateUrl: './sign-up.component.html',
+  styleUrls: ['./sign-up.component.css']
 })
-export class VerifyEmailComponentComponent implements OnInit {
+export class SignUpComponent implements OnInit {
 
   constructor(public authService: BCardAuthServiceService) { }
 

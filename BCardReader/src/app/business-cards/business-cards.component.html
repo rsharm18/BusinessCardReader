@@ -3,26 +3,46 @@
 <nav class="navbar navbar-default">
     <div class="container-fluid">
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">Business Card</a>
+        <a class="navbar-brand" href="#">Business Card App</a>
       </div>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li ><a href="#">Welcome {{getUser()}}</a></li>
+        <!-- <li class="active"><a href="#">Home</a></li> -->
+        <li ><a href="#">Welcome <b>{{getUser()}}</b></a></li>
         <!-- <li><a href="#">Page 2</a></li>
         <li><a href="#">Page 3</a></li> -->
       </ul>
-      <span class="form-inline my-2 my-lg-0 mr-sm-2" style="float:right">
+      
+
+
+      <div class="navbar-collapse collapse w-100 order-3 dual-collapse2" style="float: right;">
+          <ul class="nav navbar-nav" style="text-align: right;left:50%;padding: 0;margin: 0;">
+              <li (click)="logoutMe()" style="padding-right: .6em;">
+                  <a href="#" class="btn btn-danger">Logout</a>
+              </li>
+            </ul>
+      </div>
+      <!-- <span class="form-inline my-2 my-lg-0 mr-sm-2" style="float:right">
         <a href="#" class=" btn-danger" (click)="logoutMe()"><br>&nbsp;&nbsp;&nbsp;Logout&nbsp;&nbsp;&nbsp;</a>
-      </span>
+      </span> -->
     </div>
   </nav>
+  <nav class="navbar">
+      <ul class="nav navbar-nav">
+
+        <li class="list-group-item ">
+            <button type="button" class="btn btn-primary" (click)="showAll()">Show All Business Cards</button>
+        </li>
+
+          <li class="list-group-item ">
+            <button type="button" class="{{getClass()}}" (click)="showSearchForm = !showSearchForm">
+              <span *ngIf="!showSearchForm">Show Business Cards Search Criteria</span>
+              <span *ngIf="showSearchForm">Hide Business Cards Search Criteria</span>
+          </button></li>
+          <li class="list-group-item"><button type="button" class="btn btn-info" (click)="onOpen(true)">Click to Add New Card</button></li>
+        </ul>
+  </nav>
   
-
-
-  <div class="row">
-      <button type="button" class="btn btn-success" (click)="onOpen(true)">Click to Add New Card</button>
-  </div>
-    <div>
+    <div *ngIf="showSearchForm" class="container" style="border-color: khaki;border-width: 3px;"> 
         <app-business-card-search-component (onFilterBusinessCards)="searchByField($event)"></app-business-card-search-component>
     </div>
 
@@ -34,25 +54,45 @@
           </div>
   </section><br><br> -->
   <section id="body"> 
-    <span>Business Card List</span>
-    <div class="w-100" style="background-color: #eee;">
-        <div class="w-100" *ngFor="let bCard of bCards  | async; index as i" width='100%'>
-                <app-business-card [bCard]=getBCardObj(bCard) [index]=i (onUpdateBCard)="updateBCard($event)" (onDeleteBCard)="deleteBCard($event)"></app-business-card>
-        </div>
+    <div class="container-fluid">
+      <div class="row">
+          
+          <p class="text-primary"><b>Business Card Data</b> </p>
+      </div>
+      <div class="row">
+         <div class="w-100" style="background-color: #eee;">
+              <div class="w-100" *ngFor="let bCard of bCards  | async; index as i" width='100%'>
+                      <app-business-card [bCard]=getBCardObj(bCard) [index]=i (onUpdateBCard)="updateBCard($event)" (onDeleteBCard)="deleteBCard($event)"></app-business-card>
+              </div>
+          </div>
+
+         <div *ngIf="!dataFound" class="divIncenter row btn-dark">
+            Oops! Looks like you have not uploaded any Business Card. 
+            
+            <br> 
+            <br> 
+            <button type="button" class="btn btn-warning" (click)="onOpen(true)">Click to Add New Card</button>
+         </div>
+      </div>
     </div>
+   
+    
   </section>
 
 </div>
 </div>
 
 <div class="container-fluid" id="mydiv" *ngIf="flag">
+    
+
     <div class="row align-self-end" style="float: right;" >
-      <button (click)="onOpen(!flag)" class="btn">Close</button>
+        <a href="#" (click)="onOpen(!flag)" >
+          <img src="../../assets/close.png" alt="CLOSE" height="20px" width="20px">
+
+        </a>
     </div><br><br>
     <div class="row">
       <app-new-business-card-component [docID]="docID" [bCard]=currentBCard [curindex]=curindex (onSaveBCard)="saveBCard($event)"></app-new-business-card-component>
     </div>
-    <div class="row align-self-center">
-         <button (click)="onOpen(!flag)" class="btn">Close</button>
-    </div>
+    
   </div>

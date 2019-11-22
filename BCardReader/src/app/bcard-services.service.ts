@@ -6,6 +6,8 @@ import { BusinessCardDataModel } from './business-card-data-model/business-card-
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFirestoreDocument, AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { BCardConfig } from './app.config';
+import { BCardAuthServiceService } from './bcard-auth-service.service';
+import { JsonPipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +24,7 @@ export class BCardServicesService {
 
   //currentBusinessCard:Subject<BusinessCardDataModel> = new BehaviorSubject<BusinessCardDataModel>(null);
 
-  constructor(private route:Router,public db:AngularFirestore) { 
+  constructor(private route:Router,public db:AngularFirestore,public authService:BCardAuthServiceService) { 
     this.bCards = this.db.collection<BusinessCardDataModel>(BCardConfig.collection_endpoint)
   }
 
@@ -30,9 +32,11 @@ export class BCardServicesService {
 
   isLoggedIn():boolean
   {
-    console.log(`loggedin ? ${this.loggedIn}`);
+    // console.log(`loggedin ? ${this.loggedIn}`);
     
-    return this.loggedIn;
+    // return this.loggedIn;
+
+    return this.authService.isLoggedIn;
   }
 
   setLoggedIn(val:boolean)
@@ -43,10 +47,18 @@ export class BCardServicesService {
 
   getCurrentUserName():string
   {
-    if(localStorage.getItem("loggedIn") == 'true' && localStorage.getItem('current_user'))
+    
+    if(this.authService.isLoggedIn)
     {
+      let userName:string = JSON.parse(localStorage.getItem('user')).email;
 
-      return localStorage.getItem('current_user');
+      if(!userName)
+      {
+        this.authService.SignOut();
+      }
+      //return localStorage.getItem('current_user');
+      return userName;
+
     }
     else
     {
@@ -80,9 +92,10 @@ export class BCardServicesService {
   {
     //newCard.$id = this.db.collection(BCardConfig.collection_endpoint).doc().ref.id
 
+    console.log(` new card ${JSON.stringify(newCard)}`)
     this.bCards.add(Object.assign({}, newCard));
     
-    newCard.getDetail();
+    //newCard.getDetail();
     
   }
 

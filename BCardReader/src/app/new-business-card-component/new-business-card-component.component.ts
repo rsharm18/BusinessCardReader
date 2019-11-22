@@ -29,12 +29,16 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
    phoneNumber:string
 
    allowCamera:boolean;
-   
+   value:string = "style='width: 0%'";
+
   files:File;
   base64Image:string = ""
   imagePath:SafeHtml;
-   showImage:boolean = false;
+  showImage:boolean = false;
   
+
+  showSpinner: boolean = false;
+
   TextExtractionStatus="";
   private editMode:boolean=false;
   
@@ -107,6 +111,7 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
   saveBCard()
   {
 
+    console.log(`The current user ${this.bCardSerivces.getCurrentUserName()}`);
 
     //do not add id as it overlaps with document's id
     let obj:any = {
@@ -114,12 +119,12 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
       "email"       : this.email,      
       "companyName" : this.companyName,
       "imageurl"    : this.base64Image?this.base64Image: "../../assets/no-image-found.jpg",
-      "userId"      : this.bCardSerivces.username?this.bCardSerivces.username:"ravi" , 
+      "userId"      : this.bCardSerivces.getCurrentUserName()?this.bCardSerivces.getCurrentUserName():"ravi" , 
       "otherInfo"   : this.otherInfo,  
       "phoneNumber" : this.phoneNumber
       }
 
-      //this.onSaveBCard.emit({docID:this.docID,bCard:obj,index:this.curindex,isNew:!this.editMode});
+      this.onSaveBCard.emit({docID:this.docID,bCard:obj,index:this.curindex,isNew:!this.editMode});
     
   }
 
@@ -143,6 +148,10 @@ export class NewBusinessCardComponentComponent implements OnChanges,OnInit {
   //convert the uploaded image to base64
   changeListener(event) {
     
+    this.value ="style='width: 0%'"; 0;
+
+    this.showSpinner = true;
+
     this.files = event.target.files[0];
     var reader = new FileReader();
     console.log(`file ${this.files.name}`);
@@ -155,6 +164,8 @@ _handleReaderLoaded(readerEvt) {
     var binaryString = readerEvt.target.result;
     this.base64Image = btoa(binaryString);  // Converting binary string data.
 
+    this.showSpinner = true;
+
     //console.log(`images is ${this.filestring}`);
 
     this.imagePath = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' 
@@ -162,6 +173,7 @@ _handleReaderLoaded(readerEvt) {
     this.showImage = true
     this.setImage(this.base64Image,true)
 
+    this.value = "style='width: 25%'";
     $("#bcImg").attr("src", 'data:image/jpg;base64,'+ this.base64Image);
     
     
@@ -188,12 +200,18 @@ setImage(b64String:string,allowReadText:boolean)
   //console.log( `b64String : ${b64String}`)
   if(allowReadText)
     this.readTextFromImage();
+  else
+  {
+    this.showSpinner = false;
+  }
 }
 
 //call the google vision api to extract the text
 readTextFromImage()
 {
 
+  this.showSpinner = true;
+  this.value = "style='width: 40%'";
   console.log("calling the api")
   
   let queryString:string=environment.host+"?key="+environment.key;
@@ -236,6 +254,7 @@ readTextFromImage()
       console.dir(`data is ${data}`)
       //console.log(`\n\n JSON data is ${JSON.stringify(data)}`)
 
+      this.value = "style='width: 75%'";
       //console.log(` description : ${data["responses"][0]["textAnnotations"][0]["description"]}`)
       this.parseData(data.toString());
     })
@@ -254,6 +273,8 @@ parseData(data: string) {
   this.otherInfo = "";
 
   var data1 = data.split('\n');
+
+  this.value = "style='width: 00%'";
 
   data1.forEach(row => {
 
@@ -306,12 +327,17 @@ parseData(data: string) {
  console.log(`Extra Text = ${ this.companyName }`);
  console.log(`Extra Text = ${ this.otherInfo }`);
 
+ this.value = "style='width: 100%'";
+
  this.TextExtractionStatus=" Text reading is complete. Please review and make changes as neccessary....";
+
+ this.showSpinner = false;
+ 
 }
 
 getClassName():string
 {
-  return (!this.allowCamera)?"cameraOpen":"cameraClose";
+  return (!this.allowCamera)?"btn cameraOpen":" btn  cameraClose";
 }
 
 }

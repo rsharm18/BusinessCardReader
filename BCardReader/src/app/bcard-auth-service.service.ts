@@ -34,12 +34,18 @@ export class BCardAuthServiceService {
 
   // Sign in with email/password
   signIn(email, password) {
+    console.log(`email ${email} password ${password}`)
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
       .then((result) => {
+        console.log(`auth result.user ${JSON.stringify(result.user)}`)
+        this.SetUserData(result.user);
+        localStorage.setItem('user', JSON.stringify(result.user));
+        JSON.parse(localStorage.getItem('user'));
+
         this.ngZone.run(() => {
           this.router.navigate(['businessCards']);
         });
-        this.SetUserData(result.user);
+       
       }).catch((error) => {
         window.alert(error.message)
       })
@@ -78,8 +84,11 @@ export class BCardAuthServiceService {
 
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
+    console.log(`localStorage.getItem(user)  ${localStorage.getItem('user')}` );
+    
     const user = JSON.parse(localStorage.getItem('user'));
-    return (user !== null && user.emailVerified !== false) ? true : false;
+    //return (user !== null && user.emailVerified !== false) ? true : false;
+    return (user !== null) ? true : false;
   }
 
   // Sign in with Google
@@ -121,7 +130,7 @@ export class BCardAuthServiceService {
   SignOut() {
     return this.afAuth.auth.signOut().then(() => {
       localStorage.removeItem('user');
-      this.router.navigate(['sign-in']);
+      this.router.navigate(['login']);
     })
   }
 

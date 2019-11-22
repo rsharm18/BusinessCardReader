@@ -8,7 +8,7 @@
         <th scope="col">Organization</th>
         <th scope="col">Phone Number</th>
         <th scope="col">Additional Info</th>
-        <th scope="col">Uploaded BCard</th>
+        <th scope="col">Uploaded Business Card</th>
         <th scope="col">Action</th>
       </tr>
     </thead>
@@ -18,11 +18,17 @@
                 <td width="15%">{{bCard.$name}}</td>
                 <td width="15%">{{bCard.$email}}</td>
                 <td width="15%">{{bCard.$companyName}}</td>
-                <td width="25%" class="text-left">&nbsp;  <img *ngIf="imagePath" [src]="imagePath" class="rounded" style="height: 60px; width: 120 px;"/></td>
                 <td width="15%">{{bCard.$phoneNumber}}</td>
                 <td width="15%">{{bCard.$otherInfo}}</td>
-                <td width="10%">
-                        <button type="button" (click)="updateBCard()" class="btn btn-secondary">Update</button> &nbsp; &nbsp;
+                <td width="20%" class="text-left">&nbsp;  
+                  <a href="#" width="70" height="38" target="_blank" (click)="viewImageInNewPage()">  
+                    <img *ngIf="imagePath" [src]="imagePath" class="rounded" style="height: 120px; width: 160px;"/> 
+                  </a>
+                </td>
+                
+               
+                <td width="15%">
+                        <button type="button" (click)="updateBCard()" class="btn btn-warning">Update</button> &nbsp; &nbsp;
                        
                     <button type="button" (click)="deleteBCard()" class="btn btn-danger">Delete</button> 
                 </td>

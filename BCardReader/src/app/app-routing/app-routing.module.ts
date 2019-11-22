@@ -6,6 +6,8 @@ import { NotFoundComponent } from '../not-found/not-found.component';
 import { BusinessCardsComponent } from '../business-cards/business-cards.component';
 import { AuthGuardGuard } from '../auth-guard.guard';
 import { VerifyEmailComponentComponent } from '../verify-email-component/verify-email-component.component';
+import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
+import { SignUpComponent } from '../sign-up/sign-up.component';
 
 const appRoutes: Routes = [
   { path: 'login', component: LoginComponent }, 
@@ -17,13 +19,22 @@ const appRoutes: Routes = [
     redirectTo: '/businessCards',
     pathMatch: 'full'
   },
-  {
-    path: "**",
-    component: NotFoundComponent
-  },
+  
   {
     path: 'verify-email-address', 
     component: VerifyEmailComponentComponent
+  },
+  {
+    path: 'forgot-password',
+    component:ForgotPasswordComponent
+  },
+  {
+    path:'register-user',
+    component:SignUpComponent
+  },
+  {
+    path: "**",
+    component: NotFoundComponent
   }
 ];
 
