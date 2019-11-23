@@ -67,7 +67,7 @@
                                                         <table>
                                                                 <tr *ngIf="allowCamera">
                                                                         <td>
-                                                                                <button name="browseFile" (click)="allowCamera" ngClass="{{getClassName()}}">
+                                                                                <button name="browseFile" (click)="allowCamera=!allowCamera" ngClass="{{getClassName()}}">
                                                                                         Close Camera                                                                               </button>
                                                                                 <br><br>
                                                                                 

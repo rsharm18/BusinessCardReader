@@ -11,7 +11,7 @@ import { AppRoutingModule } from './app-routing/app-routing.module';
 import { NewBusinessCardComponentComponent } from './new-business-card-component/new-business-card-component.component';
 import {WebcamModule} from 'ngx-webcam';
 import { WebcamComponentComponent } from './webcam-component/webcam-component.component';
-import { environment } from 'src/environments/environment';
+import { environment } from 'src/environments/environment.prod';
 
 import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
